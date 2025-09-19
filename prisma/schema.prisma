@@ -13,3 +13,14 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model NewsItem {
+  id         String     @id @map("_id") @default(auto()) @db.ObjectId
+  title      String
+  link       String
+  content    String?   
+  pubDate    String
+  creator    String?   
+  categories String[]
+  guid       String    @unique
+}

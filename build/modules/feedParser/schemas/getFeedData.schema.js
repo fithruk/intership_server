@@ -24,12 +24,38 @@ const feedURlShema = {
             url: { type: "string" },
             force: { type: "boolean" },
         },
+        required: ["url"],
     },
     response: {
         200: {
             type: "object",
             properties: {
-                data: { type: "string" },
+                data: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            title: { type: "string" },
+                            link: { type: "string" },
+                            content: { type: "string" },
+                            pubDate: { type: "string" },
+                            creator: { type: "string" },
+                            categories: {
+                                type: "array",
+                                items: { type: "string" },
+                            },
+                            guid: { type: "string" },
+                        },
+                        required: [
+                            "title",
+                            "link",
+                            "content",
+                            "pubDate",
+                            "creator",
+                            "guid",
+                        ],
+                    },
+                },
             },
         },
     },

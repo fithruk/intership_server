@@ -5,6 +5,7 @@ services:
     image: mongo:6.0
     container_name: mongo
     restart: unless-stopped
+    command: ["mongod", "--replSet", "rs0"]
     volumes:
       - mongo-data:/data/db
     ports:

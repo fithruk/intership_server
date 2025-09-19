@@ -27,6 +27,7 @@ async function buildApp(options = {}) {
         fastify.log.info("✅ Plugins loaded successfully");
         fastify.ready(() => {
             console.log(fastify.printRoutes());
+            console.log(fastify.printPlugins);
         });
     }
     catch (error) {
