@@ -22,19 +22,17 @@ async function buildApp(options = {}) {
         });
         await fastify.register(autoload_1.default, {
             dir: (0, node_path_1.join)(__dirname, "modules"),
-            maxDepth: 3,
-            // dirNameRoutePrefix: true,
+            maxDepth: 2,
         });
         fastify.log.info("✅ Plugins loaded successfully");
+        fastify.ready(() => {
+            console.log(fastify.printRoutes());
+        });
     }
     catch (error) {
         fastify.log.error("Error in autoload:", error);
         throw error;
     }
-    // fastify.get("/", async (request, reply) => {
-    //     return {hello: "world"}
-    // })
-    // fastify.register(getFeedDataRoutes)
     return fastify;
 }
 exports.default = buildApp;

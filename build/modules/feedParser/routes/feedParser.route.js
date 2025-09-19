@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFeedDataRoutes = getFeedDataRoutes;
+exports.default = getFeedDataRoutes;
 const getFeedData_schema_1 = require("../schemas/getFeedData.schema");
 async function getFeedDataRoutes(fastify) {
     const route = fastify.withTypeProvider();
