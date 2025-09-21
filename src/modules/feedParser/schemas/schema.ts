@@ -16,7 +16,7 @@ const schema: FastifySchema = {
 	},
 } as const;
 
-const feedURlShema: FastifySchema = {
+const feedURlSchema: FastifySchema = {
 	body: {
 		type: "object",
 		properties: {
@@ -60,4 +60,25 @@ const feedURlShema: FastifySchema = {
 	},
 };
 
-export { schema, feedURlShema };
+const feedArticleSchema: FastifySchema = {
+	querystring: {
+		type: "object",
+		properties: {
+			url: { type: "string" },
+		},
+		required: ["url"],
+	},
+	response: {
+		200: {
+			type: "object",
+			properties: {
+				articleTitle: { type: "string" },
+				articleImg: { type: "string", nullable: true },
+				articleTextContent: { type: "string" },
+			},
+			required: ["articleTitle", "articleTextContent"],
+		},
+	},
+};
+
+export { schema, feedURlSchema, feedArticleSchema };

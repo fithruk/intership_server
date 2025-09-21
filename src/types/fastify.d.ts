@@ -25,5 +25,13 @@ declare module "fastify" {
 			hash: (password: string) => Promise<string>;
 			compare: (password: string, hash: string) => Promise<boolean>;
 		};
+		cheerioPlugin: {
+			loadFromURL: (url: string) => Promise<cheerio.CheerioAPI>;
+			getArticleValues: (doc: cheerio.CheerioAPI) => Promise<{
+				articleTitle: string;
+				articleImg: string | undefined;
+				articleTextContent: string;
+			}>;
+		};
 	}
 }

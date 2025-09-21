@@ -57,7 +57,7 @@ export default async function getAuthRoutes(fastify: FastifyInstance) {
 				},
 			);
 
-			reply.setCookie("acessTocken", token, {
+			reply.setCookie("acessToken", token, {
 				path: "/",
 				httpOnly: true,
 				secure: true,
