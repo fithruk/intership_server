@@ -6,7 +6,10 @@ exports.EnvSchema = {
     properties: {
         PORT: { type: "number" },
         HOST: { type: "string" },
+        JSONKEY: { type: "string" },
+        CLIENT_URL: { type: "string" },
+        COOKIE_SECRET: { type: "string" },
     },
-    required: ["PORT", "HOST"],
+    required: ["PORT", "HOST", "JSONKEY", "CLIENT_URL", "COOKIE_SECRET"],
     additionalProperties: false,
 };

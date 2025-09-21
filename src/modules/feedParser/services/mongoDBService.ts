@@ -1,33 +1,12 @@
-import { PrismaClient } from "../../../generated/prisma";
+import { FastifyInstance } from "fastify";
 import { NewsItem } from "../types/types";
 
-const saveNewItemsInDB = async (data: NewsItem[], prisma: PrismaClient) => {
-	for (const item of data) {
-		await prisma.newsItem.upsert({
-			where: { guid: item.guid },
-			update: {
-				title: item.title,
-				link: item.link,
-				content: item.content || "",
-				pubDate: new Date(item.pubDate).toISOString(),
-				creator: item.creator || "",
-				categories: item.categories || [],
-			},
-			create: {
-				title: item.title,
-				link: item.link,
-				content: item.content || "",
-				pubDate: new Date(item.pubDate).toISOString(),
-				creator: item.creator || "",
-				categories: item.categories || [],
-				guid: item.guid,
-			},
-		});
-	}
+const saveNewItemsInDB = async (data: NewsItem[], fastify: FastifyInstance) => {
+  await fastify.prismaPlugin.feed.saveNewItemsInDB(data);
 };
 
-const getNewsItems = async (prisma: PrismaClient) => {
-	return await prisma.newsItem.findMany();
+const getNewsItems = async (fastify: FastifyInstance) => {
+  return await fastify.prismaPlugin.feed.getNewsItems();
 };
 
 export { saveNewItemsInDB, getNewsItems };

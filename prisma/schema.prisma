@@ -24,3 +24,10 @@ model NewsItem {
   categories String[]
   guid       String    @unique
 }
+
+model User {
+   id         String     @id @map("_id") @default(auto()) @db.ObjectId
+   name       String
+   password   String
+   email      String     @unique
+}
