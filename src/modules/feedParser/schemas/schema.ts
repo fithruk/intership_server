@@ -1,7 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.feedURlShema = exports.schema = void 0;
-const schema = {
+import { FastifySchema } from "fastify";
+
+const schema: FastifySchema = {
 	//   tags: ["feed"],
 	//   summary: "Get feed data",
 	//   description: "Get feed data",
@@ -15,9 +14,9 @@ const schema = {
 			},
 		},
 	},
-};
-exports.schema = schema;
-const feedURlShema = {
+} as const;
+
+const feedURlSchema: FastifySchema = {
 	body: {
 		type: "object",
 		properties: {
@@ -60,4 +59,26 @@ const feedURlShema = {
 		},
 	},
 };
-exports.feedURlShema = feedURlShema;
+
+const feedArticleSchema: FastifySchema = {
+	querystring: {
+		type: "object",
+		properties: {
+			url: { type: "string" },
+		},
+		required: ["url"],
+	},
+	response: {
+		200: {
+			type: "object",
+			properties: {
+				articleTitle: { type: "string" },
+				articleImg: { type: "string", nullable: true },
+				articleTextContent: { type: "string" },
+			},
+			required: ["articleTitle", "articleTextContent"],
+		},
+	},
+};
+
+export { schema, feedURlSchema, feedArticleSchema };
