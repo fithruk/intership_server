@@ -3,68 +3,68 @@ import { FastifyInstance } from "fastify";
 import { RegistrationBodyTypes } from "../types/types";
 import { loginShema, registerShema } from "../shemas/shema";
 import {
-	createNewUserInDB,
-	findUserByEmail,
+  createNewUserInDB,
+  findUserByEmail,
 } from "../services/authMongoService";
 
 export default async function getAuthRoutes(fastify: FastifyInstance) {
-	const route = fastify.withTypeProvider<JsonSchemaToTsProvider>();
+  const route = fastify.withTypeProvider<JsonSchemaToTsProvider>();
 
-	fastify.register(
-		async (fastify) =>
-			await fastify.register(import("../plugins/bryps.plugin")),
-	);
+  fastify.register(
+    async (fastify) => await fastify.register(import("../plugins/bryps.plugin"))
+  );
 
-	route.post<{ Body: RegistrationBodyTypes }>(
-		"/registration",
-		{
-			schema: registerShema,
-		},
-		async (request, reply) => {
-			const newUserData = request.body;
-			await createNewUserInDB(newUserData, fastify);
-			reply.send({
-				message: `Registration for user ${newUserData.name} has been passed successfully!`,
-			});
-		},
-	);
+  route.post<{ Body: RegistrationBodyTypes }>(
+    "/registration",
+    {
+      schema: registerShema,
+    },
+    async (request, reply) => {
+      const newUserData = request.body;
+      await createNewUserInDB(newUserData, fastify);
+      reply.send({
+        message: `Registration for user ${newUserData.name} has been passed successfully!`,
+      });
+    }
+  );
 
-	route.post<{ Body: Omit<RegistrationBodyTypes, "name"> }>(
-		"/login",
-		{ schema: loginShema },
-		async (request, reply) => {
-			const { email, password } = request.body;
+  route.post<{ Body: Omit<RegistrationBodyTypes, "name"> }>(
+    "/login",
+    { schema: loginShema },
+    async (request, reply) => {
+      const { email, password } = request.body;
 
-			const candidate = await findUserByEmail(email, fastify);
+      const candidate = await findUserByEmail(email, fastify);
 
-			if (!candidate)
-				return reply.code(401).send({ message: "Incorrect email or password" });
+      if (!candidate)
+        return reply.code(401).send({ message: "Incorrect email or password" });
 
-			const isValidPassword = await fastify.brypt.compare(
-				password,
-				candidate.password,
-			);
-			if (!isValidPassword)
-				return reply.code(401).send({ message: "Incorrect email or password" });
+      const isValidPassword = await fastify.brypt.compare(
+        password,
+        candidate.password
+      );
+      if (!isValidPassword)
+        return reply.code(401).send({ message: "Incorrect email or password" });
 
-			const token = fastify.jwt.sign(
-				{
-					id: candidate.id,
-					email: candidate.email,
-				},
-				{
-					expiresIn: "15m",
-				},
-			);
+      const token = fastify.jwt.sign(
+        {
+          id: candidate.id,
+          email: candidate.email,
+        },
+        {
+          expiresIn: "15m",
+        }
+      );
 
-			reply.setCookie("acessToken", token, {
-				path: "/",
-				httpOnly: true,
-				secure: true,
-				maxAge: 60 * 15,
-			});
+      reply.setCookie("authorization", token, {
+        path: "/",
+        httpOnly: true,
+        secure: false,
+        maxAge: 60 * 15,
+        sameSite: "none",
+      });
 
-			reply.send({ message: "Login passed succesfully" });
-		},
-	);
+      reply.send({ name: candidate.name });
+    }
+  );
 }
