@@ -37,6 +37,7 @@ const feedURlSchema: FastifySchema = {
               title: { type: "string" },
               link: { type: "string" },
               content: { type: "string" },
+              enclosure: { type: "string" },
               pubDate: { type: "string" },
               creator: { type: "string" },
               categories: {
@@ -52,6 +53,7 @@ const feedURlSchema: FastifySchema = {
               "pubDate",
               "creator",
               "guid",
+              "enclosure",
             ],
           },
         },

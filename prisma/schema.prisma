@@ -20,6 +20,7 @@ model NewsItem {
   link       String
   content    String?   
   pubDate    String
+  enclosure  String?
   creator    String?   
   categories String[]
   guid       String    @unique

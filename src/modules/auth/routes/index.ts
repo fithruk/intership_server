@@ -56,12 +56,11 @@ export default async function getAuthRoutes(fastify: FastifyInstance) {
         }
       );
 
-      reply.setCookie("authorization", token, {
+      reply.setCookie("Authorization", token, {
         path: "/",
         httpOnly: true,
         secure: false,
         maxAge: 60 * 15,
-        sameSite: "none",
       });
 
       reply.send({ name: candidate.name });

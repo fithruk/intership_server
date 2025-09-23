@@ -9,7 +9,7 @@ export default fp(
       fastify.register(jsonWebToken, {
         secret: fastify.config.JSONKEY,
         cookie: {
-          cookieName: "authorization",
+          cookieName: "Authorization",
           signed: false,
         },
       });

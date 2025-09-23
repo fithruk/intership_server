@@ -5,7 +5,7 @@ const pluginName = "cors";
 export default fp(async (fastify) => {
   try {
     await fastify.register(cors, {
-      origin: [fastify.config.CLIENT_URL],
+      origin: [fastify.config.CLIENT_URL, "http://127.0.0.1:3000"],
       credentials: true,
     });
 
